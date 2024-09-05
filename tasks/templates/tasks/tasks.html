@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{% static 'app.css' %}" />
+    <script src="{% static 'app.js' %}" defer ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        Home
+      {% endblock %}
+    </title>
+  </head>
+  <body>
+    <div class="content">
+      <div>
+        <button id="add_task">Add Task</button> 
+        <div class="create-container">
+          <form action="{% url 'tasks:create' %}" method="post" class="create">
+            {% csrf_token %}
+  
+            {{ create_task }}
+  
+            {% comment %} <input type="submit" /> {% endcomment %}
+  
+            <button>Save</button>
+          </form>
+
+        </div>
+      </div>
+      {% for task in tasks %}
+        <div class="task">
+          <h1>{{ task.title }}</h1>
+          {% comment %} <a href="#">Edit</a> {% endcomment %}
+          {% comment %} <a href="{% url 'tasks:done' task_id=task.id %} ">Done</a> {% endcomment %}
+          <form action="{% url 'tasks:home' %}" method="post" class="done">
+            {% csrf_token %}
+            <input type="text" name="task_id" hidden value="{{ task.id }}" />
+            <button name="done" id="done">Done</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>
