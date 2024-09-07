@@ -4,7 +4,7 @@
     {% load static %}
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="{% static 'app.css' %}" />
-    <script src="{% static 'app.js' %}" defer ></script>
+    <script src="{% static 'app.js' %}" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
       {% block title %}
@@ -14,33 +14,34 @@
   </head>
   <body>
     <div class="content">
-      <div>
-        <button id="add_task">Add Task</button> 
+      <div style="width: 600px; z-index: -3;">
+        <button id="add_task">Add Task</button>
         <div class="create-container">
           <form action="{% url 'tasks:create' %}" method="post" class="create">
             {% csrf_token %}
-  
-            {{ create_task }}
-  
-            {% comment %} <input type="submit" /> {% endcomment %}
-  
-            <button>Save</button>
-          </form>
 
+            {{ create_task }}
+
+            {% comment %} <input type="submit" /> {% endcomment %}
+
+            <button style="z-index: -3;">Save</button>
+          </form>
         </div>
       </div>
-      {% for task in tasks %}
-        <div class="task">
-          <h1>{{ task.title }}</h1>
-          {% comment %} <a href="#">Edit</a> {% endcomment %}
-          {% comment %} <a href="{% url 'tasks:done' task_id=task.id %} ">Done</a> {% endcomment %}
-          <form action="{% url 'tasks:home' %}" method="post" class="done">
-            {% csrf_token %}
-            <input type="text" name="task_id" hidden value="{{ task.id }}" />
-            <button name="done" id="done">Done</button>
-          </form>
-        </div>
-      {% endfor %}
+      <div class="tasks">
+        {% for task in tasks %}
+          <div class="task">
+            <h1>{{ task.title }}</h1>
+            {% comment %} <a href="#">Edit</a> {% endcomment %}
+            {% comment %} <a href="{% url 'tasks:done' task_id=task.id %} ">Done</a> {% endcomment %}
+            <form action="{% url 'tasks:home' %}" method="post" class="done">
+              {% csrf_token %}
+              <input type="text" name="task_id" hidden value="{{ task.id }}" />
+              <button name="done" id="done">Done</button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
     </div>
   </body>
 </html>
